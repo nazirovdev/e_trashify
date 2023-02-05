@@ -22,11 +22,15 @@ export const asyncSetAuthAdmin = ({ email, password }) => async (dispatch) => {
   dispatch(setIsLoading(true))
   try {
     const token = await api.loginAdmin({ email, password })
-    await api.setAccessToken(token)
 
-    const authAdmin = await api.getOwnProfileAdmin()
-    dispatch(setAuthUser(authAdmin))
+    if (token) {
+      await api.setAccessToken(token)
+
+      const authAdmin = await api.getOwnProfileAdmin()
+      dispatch(setAuthUser(authAdmin))
+    }
   } catch (error) {
+    dispatch(setAuthUser(null))
     Alert.alert(error.message)
   }
   dispatch(setIsLoading(false))
