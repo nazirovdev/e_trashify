@@ -1,21 +1,19 @@
-import { authNasabahReducer } from "./auth/nasabah/slice";
-import { jenisSampahReducer } from "./jenis_sampah/slice";
-import { preloadReducer } from "./preload/slice";
+import { authUserReducer } from "./authUser/reducer";
+import { isLoadingReducer } from "./isLoading/reducer";
+import { isPreloadReducer } from "./isPreload/reducer";
+import { jenisSampahReducer } from "./jenis_sampah/reducer";
+import { nasabahReducer } from "./nasabah/reducer";
+import { transaksiReducer } from "./transaksi/reducer";
 
-import { configureStore } from "@reduxjs/toolkit";
-import { transaksiReducer } from "./transaksi/slice";
-import { detailTransaksiReducer } from "./detailTransaksi/slice";
-import { authAdminReducer } from "./auth/admin/slice";
+const { configureStore } = require("@reduxjs/toolkit");
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    authNasabahReducer,
-    authAdminReducer,
-    preloadReducer,
+    authUserReducer,
+    isPreloadReducer,
+    isLoadingReducer: isLoadingReducer,
     jenisSampahReducer,
-    transaksiReducer,
-    detailTransaksiReducer
+    nasabahReducer,
+    transaksiReducer
   }
 })
-
-export default store

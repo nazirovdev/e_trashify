@@ -1,32 +1,37 @@
 import { Alert } from "react-native"
 import { api } from "../../utils/api"
-import { transaksiAction } from "./slice"
 
-const asyncSetDataTransaksi = () => async (dispatch) => {
-  dispatch(transaksiAction.getInitialData())
-  try {
-    const result = await api.getTransaksi()
-    dispatch(transaksiAction.getSuccessData(result))
-  } catch (error) {
-    Alert.alert(error.message)
-    dispatch(transaksiAction.getErrorData(error.message))
-  }
+export const ActionType = {
+  RECEIVE_TRANSAKSI: 'RECEIVE_TRANSAKSI',
+  ACTION_TRANSAKSI: 'ACTION_TRANSAKSI',
 }
 
-const asyncAddDataTransaksi = ({ idJenisSampah, description, berat }, onSuccess) => async (dispatch) => {
-  try {
-    const result = await api.addTransaksi({ idJenisSampah, description, berat })
-
-    if (!result.error) {
-      onSuccess()
+export const receiveTransakti = (transaksi) => {
+  return {
+    type: ActionType.RECEIVE_TRANSAKSI,
+    payload: {
+      transaksi
     }
-  } catch (error) {
-    Alert.alert(error.message)
-    dispatch(transaksiAction.getErrorData(error.message))
   }
 }
 
-export {
-  asyncSetDataTransaksi,
-  asyncAddDataTransaksi
+export const actionTransakti = (idTransaksi, action) => {
+  return {
+    type: ActionType.RECEIVE_TRANSAKSI,
+    payload: {
+      transaksi: {
+        idTransaksi,
+        action
+      }
+    }
+  }
+}
+
+export const asyncReceiveTransaksi = () => async (dispatch) => {
+  try {
+    const transaksi = await api.getAllTransaksi()
+    dispatch(receiveTransakti(transaksi))
+  } catch (error) {
+    Alert.alert(error.message)
+  }
 }

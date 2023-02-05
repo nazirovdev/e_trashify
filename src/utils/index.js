@@ -1,6 +1,5 @@
 export const getFirstName = (fullName) => fullName.split(' ')[0]
 
-
 export const getColorStatus = (status) => {
   if (status.match(/pending/gi)) {
     return '#e89609'

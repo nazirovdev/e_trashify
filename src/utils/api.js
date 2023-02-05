@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { Alert } from "react-native"
 
 const BASE_URL = 'http://192.168.100.42:3000'
 
@@ -152,6 +153,110 @@ const getOwnProfileAdmin = async () => {
   return result.admin
 }
 
+const addSampah = async ({ name, point }) => {
+  const response = await fetchWithAuth(`${BASE_URL}/admin/jenis_sampah`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, point })
+  })
+
+  const result = await response.json()
+
+  return result.data.jenis_sampah
+}
+
+const putJenisSampah = async ({ id, name, point }) => {
+  try {
+    const response = await fetchWithAuth(`${BASE_URL}/admin/jenis_sampah/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, point })
+    })
+
+    const result = await response.json()
+
+    return result.data.jenis_sampah
+  } catch (error) {
+    Alert.alert(error.message)
+  }
+}
+
+const deleteJenisSampah = async ({ id }) => {
+  try {
+    const response = await fetchWithAuth(`${BASE_URL}/admin/jenis_sampah/${id}`, {
+      method: 'DELETE',
+    })
+
+    await response.json()
+  } catch (error) {
+    Alert.alert(error.message)
+  }
+}
+
+const getNasabah = async () => {
+  const response = await fetchWithAuth(`${BASE_URL}/admin/nasabah`, {
+    method: 'GET',
+  })
+
+  const result = await response.json()
+
+  if (result.error) {
+    throw new Error(result.message)
+  }
+
+  return result.data.nasabah
+}
+
+const addNasabah = async ({ name, email, password, address }) => {
+  const response = await fetchWithAuth(`${BASE_URL}/admin/nasabah`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name, email, password, address
+    })
+  })
+
+  const result = await response.json()
+
+  if (result.error) {
+    throw new Error(result.message)
+  }
+
+  return result.data.nasabah
+}
+
+const deleteNasabah = async ({ id }) => {
+  const response = await fetchWithAuth(`${BASE_URL}/admin/nasabah/${id}`, {
+    method: 'DELETE',
+  })
+
+  const result = await response.json()
+
+  if (result.error) {
+    throw new Error(result.message)
+  }
+}
+
+const getAllTransaksi = async () => {
+  const response = await fetchWithAuth(`${BASE_URL}/admin/transaksi`, {
+    method: 'GET'
+  })
+
+  const result = await response.json()
+
+  if (result.error === true) {
+    throw new Error(result.message)
+  }
+
+  return result.data.transaksi
+}
+
 export const api = {
   getAccessToken,
   setAccessToken,
@@ -163,5 +268,13 @@ export const api = {
   getDetailTransaksi,
   addTransaksi,
   loginAdmin,
-  getOwnProfileAdmin
+  getOwnProfileAdmin,
+  addSampah,
+  putJenisSampah,
+  deleteJenisSampah,
+  getNasabah,
+  addNasabah,
+  deleteNasabah,
+  getTransaksi,
+  getAllTransaksi
 }

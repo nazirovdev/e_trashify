@@ -1,120 +1,65 @@
 import React, { useEffect } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import Nasabah from './src/pages/nasabah/Nasabah'
-import LoginNasabah from './src/pages/nasabah/LoginNasabah'
-import TabungSampahNasabah from './src/pages/nasabah/TabungSampahNasabah'
-import DataSampah from './src/pages/nasabah/DataSampah'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import LoginAdmin from './src/pages/admin/LoginAdmin'
+import LoginAdminPage from './src/pages/admin/LoginAdminPage'
+import LoginNasabahPage from './src/pages/nasabah/LoginNasabahPage'
+import DaftarNasabahPage from './src/pages/admin/DaftarNasabahPage'
+import TambahJeniSampahPage from './src/pages/admin/TambahJeniSampahPage'
+import DataJenisSampahPage from './src/pages/DataJenisSampahPage'
+import DetailJenisSampahPage from './src/pages/admin/DetailJenisSampahPage'
+import DataNasabahPage from './src/pages/admin/DataNasabahPage'
+import DetailDataNasabahPage from './src/pages/admin/DetailDataNasabahPage'
+import DataTransaksiPage from './src/pages/admin/DataTransaksiPage'
+import DetailTransactionPage from './src/pages/admin/DetailTransactionPage'
 import { useDispatch, useSelector } from 'react-redux'
-import { asyncIsPreload } from './src/store/preload/action'
-import { ActivityIndicator, View } from 'react-native'
-import DetailTransaksiNasabah from './src/pages/nasabah/DetailTransaksiNasabah'
-import DataTransaksiNasabah from './src/pages/nasabah/DataTransaksiNasabah'
-import { Typografi } from './src/pages/nasabah/HomeNasabah'
 import Admin from './src/pages/admin/Admin'
-import TambahSampah from './src/pages/admin/TambahSampah'
-import DaftarNasabah from './src/pages/nasabah/DaftarNasabah'
-
-const Stack = createNativeStackNavigator()
+import Nasabah from './src/pages/nasabah/Nasabah'
+import { asyncSetPreload } from './src/store/isPreload/action'
+import Loading from './src/components/Loading'
 
 export default function Main() {
-  const { authNasabahReducer, authAdminReducer, preloadReducer } = useSelector(state => state)
+  const Stack = createNativeStackNavigator()
 
-  const isAuthNasabah = authNasabahReducer.authNasabah
-  const isLoadingNasabah = authNasabahReducer.isLoading
-
-  const isAuthAdmin = authAdminReducer.authAdmin
-  const isLoadingAdmin = authAdminReducer.isLoading
-
-  const isPreload = preloadReducer.isPreload
+  const { authUserReducer, isPreloadReducer, isLoadingReducer } = useSelector(states => states)
 
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(asyncIsPreload())
+    dispatch(asyncSetPreload())
   }, [dispatch])
 
-  if (isPreload === true) {
+  if (isPreloadReducer === true) {
+    return <Loading />
+  }
+
+  if (authUserReducer !== null && authUserReducer.role === 1) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#00D185" />
-        <Typografi color="#00D185">Memuat...</Typografi>
-      </View>
+      <Stack.Navigator initialRouteName='Admin'>
+        <Stack.Screen name='Admin' component={Admin} options={{ headerShown: false }} />
+        <Stack.Screen name='DataJenisSampah' component={DataJenisSampahPage} options={{ headerShown: true, headerTitle: 'Data Jenis Sampah' }} />
+        <Stack.Screen name='DetailJenisSampah' component={DetailJenisSampahPage} options={{ headerShown: true, headerTitle: 'Data Detail Sampah' }} />
+        <Stack.Screen name='TambahJeniSampah' component={TambahJeniSampahPage} options={{ headerShown: true, headerTitle: 'Tambah Sampah' }} />
+        <Stack.Screen name='DataNasabah' component={DataNasabahPage} options={{ headerShown: true, headerTitle: 'Data Nasabah' }} />
+        <Stack.Screen name='DetailDataNasabah' component={DetailDataNasabahPage} options={{ headerShown: true, headerTitle: 'Data Detail Nasabah' }} />
+        <Stack.Screen name='DaftarNasabah' component={DaftarNasabahPage} options={{ headerShown: true, headerTitle: 'Daftar Nasabah' }} />
+        <Stack.Screen name='DataTransaksi' component={DataTransaksiPage} options={{ headerShown: true, headerTitle: 'Data transaksi' }} />
+        <Stack.Screen name='DetailTransaction' component={DetailTransactionPage} options={{ headerShown: true, headerTitle: 'Data Detail transaksi' }} />
+      </Stack.Navigator>
     )
   }
 
-  if (isLoadingNasabah || isLoadingAdmin) {
+  if (authUserReducer !== null && authUserReducer.role === 0) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#00D185" />
-        <Typografi color="#00D185">Memuat...</Typografi>
-      </View>
-    )
-  }
-
-  if (isAuthAdmin !== null) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name='Admin' component={Admin} options={{ headerShown: false }} />
-          <Stack.Screen
-            name='DataSampah'
-            component={DataSampah}
-            options={{ headerShown: true, headerStyle: { backgroundColor: '#00d185' }, headerTintColor: 'white', headerTitle: 'Data Sampah' }} />
-
-          <Stack.Screen
-            name='TambahSampah'
-            component={TambahSampah}
-            options={{
-              headerShown: true, headerStyle: { backgroundColor: '#00d185' },
-              headerTintColor: 'white', headerTitle: 'Tambah Sampah'
-            }} />
-
-          <Stack.Screen
-            name='DaftarNasabah'
-            component={DaftarNasabah}
-            options={{
-              headerShown: true, headerStyle: { backgroundColor: '#00d185' },
-              headerTintColor: 'white', headerTitle: 'Daftar Nasabah'
-            }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    )
-  }
-
-  if (isAuthNasabah !== null) {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name='Nasabah' component={Nasabah} options={{ headerShown: false }} />
-          <Stack.Screen
-            name='TabungSampahNasabah'
-            component={TabungSampahNasabah}
-            options={{ headerShown: true, headerStyle: { backgroundColor: '#00d185' }, headerTintColor: 'white', headerTitle: 'Tabung Sampah' }} />
-          <Stack.Screen
-            name='DataTransaksi'
-            component={DataTransaksiNasabah}
-            options={{ headerShown: true, headerStyle: { backgroundColor: '#00d185' }, headerTintColor: 'white', headerTitle: 'Data Transaksi' }} />
-          <Stack.Screen
-            name='DetailTransaksi'
-            component={DetailTransaksiNasabah}
-            options={{ headerShown: true, headerStyle: { backgroundColor: '#00d185' }, headerTintColor: 'white', headerTitle: 'Detail Transaksi' }} />
-          <Stack.Screen
-            name='DataSampah'
-            component={DataSampah}
-            options={{ headerShown: true, headerStyle: { backgroundColor: '#00d185' }, headerTintColor: 'white', headerTitle: 'Data Sampah' }} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <Stack.Navigator initialRouteName='Nasabah'>
+        <Stack.Screen name='Nasabah' component={Nasabah} options={{ headerShown: false }} />
+        <Stack.Screen name='DataJenisSampah' component={DataJenisSampahPage} options={{ headerShown: true, headerTitle: 'Data Jenis Sampah' }} />
+      </Stack.Navigator>
     )
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='LoginNasabah' component={LoginNasabah} options={{ headerShown: false }} />
-        <Stack.Screen name='LoginAdmin' component={LoginAdmin} options={{ headerShown: false }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name='LoginAdmin' component={LoginAdminPage} options={{ headerShown: false }} />
+      <Stack.Screen name='LoginNasabah' component={LoginNasabahPage} options={{ headerShown: false }} />
+    </Stack.Navigator>
   )
 }
