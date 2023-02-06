@@ -14,7 +14,7 @@ export default function CardTransaksi({ onClick, name_nasabah, tgl_transaksi, to
         overflow: 'hidden',
         padding: 10
       }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', gap: 10 }}>
           <View style={{
             backgroundColor: 'white',
             width: 60,

@@ -14,7 +14,9 @@ export const asyncReceiveTransaksiNasabah = () => async (dispatch) => {
 export const asyncAddTransaksiNasabah = ({ idJenisSampah, berat, description }) => async (dispatch) => {
   try {
     const transaksi = await api.addTransaksi({ idJenisSampah, berat, description })
-    dispatch(transaksiNasabahAction.addTransaksi({ transaksi }))
+    const user = await api.getOwnProfileNasabah()
+
+    dispatch(transaksiNasabahAction.addTransaksi({ transaksi: { ...transaksi, name: user.name } }))
   } catch (error) {
     Alert.alert(error.message)
   }

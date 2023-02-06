@@ -69,7 +69,6 @@ export default function DashboardNasabahPage({ navigation }) {
           flexWrap: 'wrap'
         }}>
           <DashboardCardItem imageSource={DataSampahImage} title='Data Sampah' onClick={() => navigation.navigate('DataJenisSampah')} />
-          <DashboardCardItem imageSource={DataSampahImage} title='Data Peingkat' onClick={() => navigation.navigate('TambahJeniSampah')} />
           <DashboardCardItem imageSource={DataSampahImage} title='Data Transaksi' onClick={() => navigation.navigate('DataTransaksiNasabah')} />
           <DashboardCardItem imageSource={DataSampahImage} title='Buat Transaksi' onClick={() => navigation.navigate('TambahTransaksiNasabah')} />
         </View>

@@ -34,6 +34,8 @@ export default function TambahTransaksiNasabah({ navigation }) {
 
   const onTambahHandle = () => {
     dispatch(asyncAddTransaksiNasabah({ idJenisSampah: valueSampah, berat: beratSampah, description: deskripsi }))
+
+    navigation.pop()
   }
 
   const onChangeBerat = (value) => {

@@ -1,7 +1,6 @@
 import { View, ScrollView, Text } from 'react-native'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import CardTransaksi from '../../components/CardTransaksi'
 import Spacer from '../../components/Spacer'
 import CardTransaksiNasabah from '../../components/CardTransaksiNasabah'
 
@@ -9,7 +8,9 @@ export default function DataTransaksiNasabahPage({ navigation }) {
   const { transaksiNasabahReducer } = useSelector(state => state)
   const dataTransaksi = transaksiNasabahReducer.data
 
-  // return null
+  if (dataTransaksi === null) {
+    return null
+  }
 
   return (
     dataTransaksi.length <= 0 ? (
