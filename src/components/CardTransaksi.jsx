@@ -1,8 +1,9 @@
 import { View, Text, Dimensions, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { convertDate } from '../utils/index'
+import { convertDate, getTwoCharName } from '../utils/index'
+import TransactionStatus from './TransactionStatus'
 
-export default function CardTransaksi({ onClick, name_nasabah, tgl_transaksi, total_point, name_jenis_sampah, berat }) {
+export default function CardTransaksi({ onClick, name_nasabah, tgl_transaksi, total_point, name_jenis_sampah, berat, status }) {
   return (
     <TouchableOpacity onPress={onClick}>
       <View style={{
@@ -14,13 +15,24 @@ export default function CardTransaksi({ onClick, name_nasabah, tgl_transaksi, to
         padding: 10
       }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-          <View style={{ backgroundColor: 'red', width: 60, height: 60, borderRadius: 100 }} />
-          <View>
-            <Text style={{ fontWeight: 'bold' }}>{name_nasabah}</Text>
-            <Text>{name_jenis_sampah} {berat}Kg</Text>
+          <View style={{
+            backgroundColor: 'white',
+            width: 60,
+            height: 60,
+            borderRadius: 100,
+            elevation: 4,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{getTwoCharName(name_nasabah)}</Text>
+          </View>
+          <View style={{ gap: 10 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{name_nasabah}</Text>
+            <TransactionStatus status={status} />
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{berat}Kg</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={{ fontWeight: 'bold' }}>{total_point} Point</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{total_point} Point</Text>
             <Text>{convertDate(tgl_transaksi)}</Text>
           </View>
         </View>

@@ -25,7 +25,7 @@ export default function Admin() {
           // You can return any component that you like here!
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'green',
+        tabBarActiveTintColor: 'rgb(34 197 94)',
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen name='Dashboard' component={DashboardAdminPage} options={{ headerTitle: 'Dashboard' }} />

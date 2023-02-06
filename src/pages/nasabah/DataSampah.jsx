@@ -1,10 +1,10 @@
 import { View, ScrollView, Text } from 'react-native'
 import React from 'react'
-import Spacer from '../components/Spacer'
-import CardItemSampah from '../components/CardItemSampah'
 import { useSelector } from 'react-redux'
+import CardItemSampah from '../../components/CardItemSampah'
+import Spacer from '../../components/Spacer'
 
-export default function DataJenisSampah({ navigation }) {
+export default function DataSampah({ navigation }) {
   const { sampahReducer } = useSelector(state => state)
 
   const dataSampah = sampahReducer.data
@@ -25,7 +25,7 @@ export default function DataJenisSampah({ navigation }) {
                   <CardItemSampah
                     {...jenisSampah}
                     key={key}
-                    onClick={() => navigation.navigate('DetailJenisSampah', { jenisSampah: { ...jenisSampah } })} />
+                    onClick={() => { }} />
                 ))
               }
             </View>

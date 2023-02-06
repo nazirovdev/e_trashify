@@ -1,22 +1,22 @@
-import { View, Text, Dimensions } from 'react-native'
+import { View, Dimensions, Text } from 'react-native'
 import React from 'react'
 import Spacer from '../../components/Spacer'
 import ProfileItem from '../../components/ProfileItem'
 import Line from '../../components/Line'
 import Avatar from '../../components/Avatar'
-import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../components/Button'
-import { unsetAuthUser } from '../../store/authUser/action'
+import { useDispatch, useSelector } from 'react-redux'
+import { getTwoCharName } from '../../utils'
+import { asyncUnsetAuthUser } from '../../store/auth/action'
 
 export default function ProfileAdminPage({ navigation }) {
   const { authUserReducer } = useSelector(state => state)
-
-  const { name, email } = authUserReducer
+  const authUserData = authUserReducer.data
 
   const dispatch = useDispatch()
 
   const onLogoutHandle = () => {
-    dispatch(unsetAuthUser())
+    dispatch(asyncUnsetAuthUser())
   }
 
   return (
@@ -26,21 +26,23 @@ export default function ProfileAdminPage({ navigation }) {
       alignItems: 'center',
       paddingTop: 60
     }}>
-      <Avatar width={150} height={150} />
+      <Avatar width={130} height={130}>
+        <Text style={{ fontSize: 36, fontWeight: 'bold' }}>{getTwoCharName(authUserData.name)}</Text>
+      </Avatar>
       <Spacer height={30} />
       <View style={{ width: Dimensions.get('screen').width * 0.80 }}>
         <ProfileItem
           iconName='account'
           profileVariant='Nama'
-          profileContent={name} />
-        <Spacer height={5} />
+          profileContent={authUserData.name} />
+        <Spacer height={15} />
         <Line height={2} bgColor='#dedcdc' />
-        <Spacer height={5} />
+        <Spacer height={15} />
         <ProfileItem
           iconName='email'
           profileVariant='Email'
-          profileContent={email} />
-        <Spacer height={5} />
+          profileContent={authUserData.email} />
+        <Spacer height={15} />
         <Line height={2} bgColor='#dedcdc' />
         <Spacer height={55} />
         <Button onClick={onLogoutHandle}>Logout</Button>

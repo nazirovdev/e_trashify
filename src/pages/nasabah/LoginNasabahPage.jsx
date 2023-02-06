@@ -6,7 +6,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import Spacer from '../../components/Spacer'
 import { useInput } from '../../hooks/useInput'
 import { useDispatch } from 'react-redux'
-import { asyncSetAuthNasabah, setAuthUser } from '../../store/authUser/action'
+import { asyncSetAuthNasabah } from '../../store/auth/action'
 
 export default function LoginNasabahPage({ navigation }) {
   const [email, setEmail] = useInput('')

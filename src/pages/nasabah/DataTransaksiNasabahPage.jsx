@@ -1,12 +1,15 @@
 import { View, ScrollView, Text } from 'react-native'
 import React from 'react'
-import Spacer from '../../components/Spacer'
-import CardTransaksi from '../../components/CardTransaksi'
 import { useSelector } from 'react-redux'
+import CardTransaksi from '../../components/CardTransaksi'
+import Spacer from '../../components/Spacer'
+import CardTransaksiNasabah from '../../components/CardTransaksiNasabah'
 
-export default function DataTransaksiPage({ navigation }) {
-  const { transaksiReducer } = useSelector(state => state)
-  const dataTransaksi = transaksiReducer.data
+export default function DataTransaksiNasabahPage({ navigation }) {
+  const { transaksiNasabahReducer } = useSelector(state => state)
+  const dataTransaksi = transaksiNasabahReducer.data
+
+  // return null
 
   return (
     dataTransaksi.length <= 0 ? (
@@ -20,7 +23,7 @@ export default function DataTransaksiPage({ navigation }) {
           <View style={{ alignItems: 'center', backgroundColor: 'white', gap: 10 }}>
             {
               dataTransaksi.map((transaksi, id) => (
-                <CardTransaksi key={id} onClick={() => navigation.navigate('DetailTransaction', {
+                <CardTransaksiNasabah key={id} onClick={() => navigation.navigate('DetailTransactionNasabah', {
                   transaksi: transaksi
                 })} {...transaksi} />
               ))

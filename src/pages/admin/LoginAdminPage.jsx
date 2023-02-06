@@ -5,24 +5,17 @@ import Button from '../../components/Button'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Spacer from '../../components/Spacer'
 import { useInput } from '../../hooks/useInput'
-import { useDispatch, useSelector } from 'react-redux'
-import { asyncSetAuthAdmin } from '../../store/authUser/action'
-import Loading from '../../components/Loading'
+import { useDispatch } from 'react-redux'
+import { asyncSetAuthAdmin } from '../../store/auth/action'
 
 export default function LoginAdminPage({ navigation }) {
   const [email, setEmail] = useInput('')
   const [password, setPassword] = useInput('')
 
-  const { isLoadingReducer } = useSelector(state => state)
-
   const dispatch = useDispatch()
 
-  const onLoginHandle = () => {
+  const onHandleLogin = () => {
     dispatch(asyncSetAuthAdmin({ email, password }))
-  }
-
-  if (isLoadingReducer) {
-    return <Loading />
   }
 
   return (
@@ -33,7 +26,7 @@ export default function LoginAdminPage({ navigation }) {
         <InputText placeholder='Masukkan Email' value={email} onChangeText={setEmail} />
         <InputText placeholder='Masukkan Password' isPassword={true} value={password} onChangeText={setPassword} />
         <Spacer height={5} />
-        <Button onClick={onLoginHandle}>Masuk Sekarang</Button>
+        <Button onClick={onHandleLogin}>Masuk Sekarang</Button>
         <TouchableOpacity onPress={() => navigation.navigate('LoginNasabah')}>
           <Text style={{ fontWeight: 'bold' }}>Login sebagai Nasabah ?</Text>
         </TouchableOpacity>

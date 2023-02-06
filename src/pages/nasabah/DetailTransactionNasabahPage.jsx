@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Spacer from '../../components/Spacer'
 import ProfileItem from '../../components/ProfileItem'
 import Line from '../../components/Line'
@@ -7,21 +7,29 @@ import Button from '../../components/Button'
 import { convertIsoToDate, getTwoCharName } from '../../utils'
 import TransactionStatus from '../../components/TransactionStatus'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useDispatch } from 'react-redux'
-import { asyncSetStatusTransaksi } from '../../store/transaksi/action'
+import { useDispatch, useSelector } from 'react-redux'
+import { asyncReceiveDetailTransaksi } from '../../store/detailTransaksi/action'
 
-export default function DetailTransactionPage({ route, navigation }) {
-  const { address, berat, email, id, name_jenis_sampah, name_nasabah, status, tgl_transaksi, total_point } = (route.params.transaksi)
+export default function DetailTransactionNasabahPage({ route }) {
+  const idTransaksi = route.params.transaksi.id
+
   const dispatch = useDispatch()
 
-  const onSetStatusTransaksiSuccess = () => {
-    dispatch(asyncSetStatusTransaksi(id, 'success'))
-    navigation.pop()
-  }
+  useEffect(() => {
+    dispatch(asyncReceiveDetailTransaksi({ id: idTransaksi }))
+  }, [dispatch, idTransaksi])
 
-  const onSetStatusTransaksiFail = () => {
-    dispatch(asyncSetStatusTransaksi(id, 'gagal'))
-    navigation.pop()
+  const { detailTransaksiReducer } = useSelector((state) => state)
+
+  const dataDetailtransaksi = detailTransaksiReducer.data
+  const isLoading = detailTransaksiReducer.isLoading
+
+  if (dataDetailtransaksi === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Loading</Text>
+      </View>
+    )
   }
 
   return (
@@ -40,27 +48,27 @@ export default function DetailTransactionPage({ route, navigation }) {
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-              <Text style={{ fontWeight: 'bold', fontSize: 26 }}>{getTwoCharName(name_nasabah)}</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 26 }}>{getTwoCharName(dataDetailtransaksi.name_nasabah)}</Text>
             </View>
             <View>
-              <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{name_nasabah}</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{dataDetailtransaksi.name_nasabah}</Text>
               <Text style={{ fontWeight: '500', fontSize: 16 }}>Nasabah</Text>
             </View>
           </View>
           <Spacer height={30} />
-          <ProfileItem iconName='account' profileVariant='Email' profileContent={email} />
+          <ProfileItem iconName='account' profileVariant='Email' profileContent={dataDetailtransaksi.email} />
           <Spacer height={10} />
           <Line height={2} bgColor='rgb(229 229 229)' />
           <Spacer height={10} />
-          <ProfileItem iconName='account' profileVariant='Berat' profileContent={`${berat}Kg`} />
+          <ProfileItem iconName='account' profileVariant='Berat' profileContent={`${dataDetailtransaksi.berat}Kg`} />
           <Spacer height={10} />
           <Line height={2} bgColor='rgb(229 229 229)' />
           <Spacer height={10} />
-          <ProfileItem iconName='account' profileVariant='Alamat' profileContent={address} />
+          <ProfileItem iconName='account' profileVariant='Alamat' profileContent={dataDetailtransaksi.address} />
           <Spacer height={10} />
           <Line height={2} bgColor='rgb(229 229 229)' />
           <Spacer height={10} />
-          <ProfileItem iconName='account' profileVariant='Jenis Sampah' profileContent={name_jenis_sampah} />
+          <ProfileItem iconName='account' profileVariant='Jenis Sampah' profileContent={dataDetailtransaksi.name_jenis_sampah} />
           <Spacer height={10} />
           <Line height={2} bgColor='rgb(229 229 229)' />
           <Spacer height={10} />
@@ -69,18 +77,18 @@ export default function DetailTransactionPage({ route, navigation }) {
             <MCIcon name='account' size={30} />
             <View style={{ gap: 5 }}>
               <Text style={{ fontWeight: 'bold', fontSize: 14 }}>Status</Text>
-              <TransactionStatus status={status} />
+              <TransactionStatus status={dataDetailtransaksi.status} />
             </View>
           </View>
 
           <Spacer height={10} />
           <Line height={2} bgColor='rgb(229 229 229)' />
           <Spacer height={10} />
-          <ProfileItem iconName='account' profileVariant='Tanggal Transaksi' profileContent={convertIsoToDate(tgl_transaksi)} />
-          <Spacer height={30} />
-          <Button bgColor='rgb(34 197 94)' onClick={onSetStatusTransaksiSuccess}>Terima</Button>
+          <ProfileItem iconName='account' profileVariant='Tanggal Transaksi' profileContent={convertIsoToDate(dataDetailtransaksi.tgl_transaksi)} />
           <Spacer height={10} />
-          <Button bgColor='rgb(239 68 68)' onClick={onSetStatusTransaksiFail}>Tolak</Button>
+          <Line height={2} bgColor='rgb(229 229 229)' />
+          <Spacer height={10} />
+          <ProfileItem iconName='account' profileVariant='Admin' profileContent={dataDetailtransaksi.name_admin} />
         </View>
         <Spacer height={30} />
       </View>

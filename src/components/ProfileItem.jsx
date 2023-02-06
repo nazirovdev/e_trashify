@@ -7,8 +7,8 @@ export default function ProfileItem({ iconName, profileVariant, profileContent }
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
       <MCIcon name={iconName} size={30} />
       <View>
-        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{profileVariant}</Text>
-        <Text>{profileContent}</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 14 }}>{profileVariant}</Text>
+        <Text style={{ fontWeight: '200', fontSize: 16 }}>{profileContent}</Text>
       </View>
     </View>
   )

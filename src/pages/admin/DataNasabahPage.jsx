@@ -7,22 +7,30 @@ import { useSelector } from 'react-redux'
 export default function DataNasabahPage({ navigation }) {
   const { nasabahReducer } = useSelector((state) => state)
 
+  const dataNasabah = nasabahReducer.data
+
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
-      <Spacer height={20} />
-      <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white', gap: 15 }}>
-        {
-          nasabahReducer.map((nasabah, id) => (
-            <CardItemNasabah
-              key={id}
-              onClick={() => navigation.navigate('DetailDataNasabah', {
-                nasabah: { ...nasabah, point: (nasabah.point === 0 ? '0' : nasabah.point) }
-              })}
-              {...nasabah} />
-          ))
-        }
+    dataNasabah.length <= 0 ? (
+      <View style={{ backgroundColor: 'white', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Data Kosong</Text>
       </View>
-      <Spacer height={20} />
-    </ScrollView>
+    ) : (
+      <ScrollView style={{ backgroundColor: 'white' }}>
+        <Spacer height={20} />
+        <View style={{ flex: 1, alignItems: 'center', gap: 15 }}>
+          {
+            dataNasabah.map((nasabah, id) => (
+              <CardItemNasabah
+                key={id}
+                onClick={() => navigation.navigate('DetailDataNasabah', {
+                  nasabah: { ...nasabah }
+                })}
+                {...nasabah} />
+            ))
+          }
+        </View>
+        <Spacer height={20} />
+      </ScrollView >
+    )
   )
 }

@@ -1,36 +1,20 @@
 import { Alert } from "react-native"
 import { api } from "../../utils/api"
-
-export const ActionType = {
-  RECEIVE_TRANSAKSI: 'RECEIVE_TRANSAKSI',
-  ACTION_TRANSAKSI: 'ACTION_TRANSAKSI',
-}
-
-export const receiveTransakti = (transaksi) => {
-  return {
-    type: ActionType.RECEIVE_TRANSAKSI,
-    payload: {
-      transaksi
-    }
-  }
-}
-
-export const actionTransakti = (idTransaksi, action) => {
-  return {
-    type: ActionType.RECEIVE_TRANSAKSI,
-    payload: {
-      transaksi: {
-        idTransaksi,
-        action
-      }
-    }
-  }
-}
+import { transaksiAction } from "./slice"
 
 export const asyncReceiveTransaksi = () => async (dispatch) => {
   try {
     const transaksi = await api.getAllTransaksi()
-    dispatch(receiveTransakti(transaksi))
+    dispatch(transaksiAction.getTransaksi({ transaksi }))
+  } catch (error) {
+    Alert.alert(error.message)
+  }
+}
+
+export const asyncSetStatusTransaksi = (id, status) => async (dispatch) => {
+  try {
+    await api.confirmStatus({ id, status })
+    dispatch(transaksiAction.setStatusTransaksi({ transaksi: { id, status } }))
   } catch (error) {
     Alert.alert(error.message)
   }

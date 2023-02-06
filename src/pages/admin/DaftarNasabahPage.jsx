@@ -6,7 +6,7 @@ import InputText from '../../components/InputText'
 import Button from '../../components/Button'
 import { useInput } from '../../hooks/useInput'
 import { useDispatch } from 'react-redux'
-import { addNasabah, asyncAddNasabah } from '../../store/nasabah/action'
+import { asyncAddNasabah } from '../../store/nasabah/action'
 
 export default function DaftarNasabah({ navigation }) {
   const [name, setName] = useInput('')
@@ -17,13 +17,9 @@ export default function DaftarNasabah({ navigation }) {
   const dispatch = useDispatch()
 
   const onDaftarNasabah = () => {
-    const newNasabah = {
-      name, email, alamat, password
-    }
-
-    dispatch(asyncAddNasabah({ name, email, address: alamat, password, point: 0 }))
-
-    navigation.pop()
+    dispatch(asyncAddNasabah({ name, email, address: alamat, password }, () => {
+      navigation.pop()
+    }))
   }
 
   return (

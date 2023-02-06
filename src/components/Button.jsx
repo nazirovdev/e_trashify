@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-export default function Button({ children, onClick }) {
+export default function Button({ children, onClick, bgColor = 'gray' }) {
   return (
     <TouchableOpacity style={{
-      backgroundColor: 'gray',
+      backgroundColor: bgColor,
       padding: 12,
       borderRadius: 5,
     }}

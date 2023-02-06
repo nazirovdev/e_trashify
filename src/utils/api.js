@@ -11,7 +11,7 @@ const setAccessToken = async (token) => {
   return await AsyncStorage.setItem('token', token)
 }
 
-const removeAccessToken = async (token) => {
+const removeAccessToken = async () => {
   return await AsyncStorage.removeItem('token')
 }
 
@@ -38,7 +38,7 @@ const loginNasabah = async ({ email, password }) => {
 
   const result = await response.json()
 
-  if (result.error === true) {
+  if (result.data === undefined) {
     throw new Error(result.message)
   }
 
@@ -116,7 +116,7 @@ const addTransaksi = async ({ idJenisSampah, berat, description }) => {
     throw new Error(error.message)
   }
 
-  return result
+  return result.data.transaksi
 }
 
 const loginAdmin = async ({ email, password }) => {
@@ -132,7 +132,7 @@ const loginAdmin = async ({ email, password }) => {
 
   const result = await response.json()
 
-  if (result.error === true) {
+  if (result.data === undefined) {
     throw new Error(result.message)
   }
 
@@ -163,6 +163,10 @@ const addSampah = async ({ name, point }) => {
   })
 
   const result = await response.json()
+
+  if (result.data === undefined) {
+    throw new Error(result.message)
+  }
 
   return result.data.jenis_sampah
 }
@@ -257,6 +261,24 @@ const getAllTransaksi = async () => {
   return result.data.transaksi
 }
 
+const confirmStatus = async ({ id, status }) => {
+  const response = await fetchWithAuth(`${BASE_URL}/admin/transaksi/confirm/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      status
+    })
+  })
+
+  const result = await response.json()
+
+  if (result.error === true) {
+    throw new Error(result.message)
+  }
+}
+
 export const api = {
   getAccessToken,
   setAccessToken,
@@ -276,5 +298,6 @@ export const api = {
   addNasabah,
   deleteNasabah,
   getTransaksi,
-  getAllTransaksi
+  getAllTransaksi,
+  confirmStatus
 }

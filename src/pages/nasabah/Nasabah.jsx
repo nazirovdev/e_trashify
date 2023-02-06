@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import ProfileNasabahPage from './ProfileNasabahPage'
+import DashboardNasabahPage from './DashboardNasabahPage'
 
 export default function Nasabah() {
   const Tab = createBottomTabNavigator()
@@ -24,9 +24,10 @@ export default function Nasabah() {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
+        tabBarActiveTintColor: 'rgb(34 197 94)',
         tabBarInactiveTintColor: 'gray',
       })}>
+      <Tab.Screen name='Dashboard' component={DashboardNasabahPage} options={{ headerTitle: 'Dashboard' }} />
       <Tab.Screen name='Profile' component={ProfileNasabahPage} options={{ headerTitle: 'Profile' }} />
     </Tab.Navigator>
   )

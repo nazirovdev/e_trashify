@@ -6,7 +6,7 @@ import InputText from '../../components/InputText'
 import Button from '../../components/Button'
 import { useInput } from '../../hooks/useInput'
 import { useDispatch } from 'react-redux'
-import { asyncDeleteJenisSampah, asyncPutJenisSampah } from '../../store/jenis_sampah/action'
+import { asyncDeleteSampah, asyncEditSampah } from '../../store/sampah/action'
 
 export default function DetailJenisSampahPage({ route, navigation }) {
   const { id, name, point } = route.params.jenisSampah
@@ -17,13 +17,13 @@ export default function DetailJenisSampahPage({ route, navigation }) {
   const dispatch = useDispatch()
 
   const onHandlePut = () => {
-    dispatch(asyncPutJenisSampah({ id, name: nameSampah, point: namePoint }))
+    dispatch(asyncEditSampah({ id, name: nameSampah, point: namePoint }))
 
     navigation.pop()
   }
 
   const onHandleDelete = () => {
-    dispatch(asyncDeleteJenisSampah(id))
+    dispatch(asyncDeleteSampah({ id }))
 
     navigation.pop()
   }

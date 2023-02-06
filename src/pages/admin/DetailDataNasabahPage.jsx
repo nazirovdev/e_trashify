@@ -4,6 +4,7 @@ import Spacer from '../../components/Spacer'
 import ProfileItem from '../../components/ProfileItem'
 import Button from '../../components/Button'
 import { useDispatch } from 'react-redux'
+import { getTwoCharName } from '../../utils'
 import { asyncDeleteNasabah } from '../../store/nasabah/action'
 
 export default function DetailDataNasabah({ route, navigation }) {
@@ -40,20 +41,18 @@ export default function DetailDataNasabah({ route, navigation }) {
             borderRadius: 100,
             position: 'absolute',
             top: -75,
-            elevation: 2
-          }} />
+            elevation: 2,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}><Text style={{ fontSize: 40 }}>{getTwoCharName(name)}</Text></View>
         </View>
         <Spacer height={30} />
         <View style={{ width: Dimensions.get('screen').width * 0.90, paddingVertical: 20, paddingHorizontal: 10, borderRadius: 10, elevation: 1 }}>
           <ProfileItem iconName='account' profileVariant='Alamat' profileContent={address} />
         </View>
-        <Spacer height={10} />
-        <View style={{ width: Dimensions.get('screen').width * 0.90, paddingVertical: 20, paddingHorizontal: 10, borderRadius: 10, elevation: 1 }}>
-          <ProfileItem iconName='account' profileVariant='Total Point' profileContent={point} />
-        </View>
       </View>
       <Spacer height={30} />
-      <View onPress={onDeleteNasabah} style={{ width: Dimensions.get('screen').width * 0.90, alignSelf: 'center' }}>
+      <View style={{ width: Dimensions.get('screen').width * 0.90, alignSelf: 'center' }}>
         <Button onClick={onDeleteNasabah}>Hapus</Button>
       </View>
       <Spacer height={30} />
